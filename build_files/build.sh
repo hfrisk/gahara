@@ -25,9 +25,10 @@ dnf5 install -y tmux
 dnf5 install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
 
 #setup noctalia stack
-dnf5 install -y noctalia
-dnf5 install -y noctalia-greeter
-dnf5 install -y umbriel-nightly
+dnf5 install -y noctalia noctalia-greeter umbriel-nightly
+
+# validate umbriel config
+umbriel config validate -c /etc/xdg/umbriel/config.toml
 
 # sed -i "s/autostart = \[\]/autostart = ['noctalia']/1" /usr/share/umbriel/config.toml
 # sed -i "s/command =.*/command = \"/usr/bin/noctalia-greeter-session\"" /etc/greetd/config.toml
@@ -35,6 +36,11 @@ dnf5 install -y umbriel-nightly
 #replace plasmalogin with greetd
 systemctl disable --now plasmalogin.service
 systemctl enable --now greetd
+
+noctalia-greeter-apply-appearance --setup-system
+
+# default noctalia plugins
+
 
 #### Example for enabling a System Unit File
 
